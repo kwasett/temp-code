@@ -1,11 +1,4 @@
-mport java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class SelectedFieldsParser {
-
-    public SelectedFields parse(String input) {
+public SelectedFields parse(String input) {
         return parseFields(input.trim());
     }
 
@@ -13,13 +6,13 @@ public class SelectedFieldsParser {
         SelectedFields selectedFields = new SelectedFields();
         selectedFields.setFields(new ArrayList<>());
 
-        // Pattern to match each field
-        Pattern fieldPattern = Pattern.compile("(\\w+)\\s*\\{([^{}]*)\\}", Pattern.DOTALL);
+        // Pattern to match each field, with or without subfields
+        Pattern fieldPattern = Pattern.compile("(\\w+)\\s*\\{([^{}]*)\\}");
         Matcher fieldMatcher = fieldPattern.matcher(input);
 
         while (fieldMatcher.find()) {
             SelectedField selectedField = new SelectedField();
-            selectedField.setName(fieldMatcher.group(1));
+            selectedField.setName(fieldMatcher.group(1).trim());
 
             String subFieldsContent = fieldMatcher.group(2).trim();
             if (!subFieldsContent.isEmpty()) {
@@ -32,21 +25,3 @@ public class SelectedFieldsParser {
 
         return selectedFields;
     }
-    }
-
-    public static void main(String[] args) {
-        String input = "{\n" +
-                "    name {\n" +
-                "        firstName,\n" +
-                "        lastName\n" +
-                "    },\n" +
-                "    id\n" +
-                "}";
-
-        SelectedFieldsParser parser = new SelectedFieldsParser();
-        SelectedFields selectedFields = parser.parse(input);
-
-        // Print the parsed object
-        System.out.println(selectedFields);
-    }
-}
