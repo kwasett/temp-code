@@ -14,7 +14,7 @@ public class SelectedFieldsParser {
         selectedFields.setFields(new ArrayList<>());
 
         // Pattern to match each field
-        Pattern fieldPattern = Pattern.compile("(\\w+)\\s*\\{(.*?)\\}", Pattern.DOTALL);
+        Pattern fieldPattern = Pattern.compile("(\\w+)\\s*\\{([^{}]*)\\}", Pattern.DOTALL);
         Matcher fieldMatcher = fieldPattern.matcher(input);
 
         while (fieldMatcher.find()) {
